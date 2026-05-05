@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>報名表 — 淨零綠廊系列講座 III</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #f0ece4;
+  --card: #f7f4ef;
+  --ink: #111111;
+  --ink-mid: #555555;
+  --ink-faint: #999999;
+  --rule: #c8c4bc;
+  --hover: #e4e0d8;
+  --selected: #dedad2;
+  --error: #b03030;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.75;
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+.site-header {
+  background: var(--bg);
+  border-bottom: 2px solid var(--ink);
+  padding: 52px 0 44px;
+}
+
+.header-inner {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.series-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 20px;
+}
+
+.event-title {
+  font-size: clamp(28px, 5vw, 42px);
+  font-weight: 900;
+  color: var(--ink);
+  line-height: 1.2;
+  margin-bottom: 28px;
+  letter-spacing: -0.01em;
+}
+
+.event-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.meta-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--ink-mid);
+  line-height: 1.5;
+}
+
+.meta-icon {
+  width: 15px;
+  height: 15px;
+  margin-top: 2px;
+  flex-shrink: 0;
+  opacity: 0.5;
+}
+
+/* ── CONTAINER ── */
+.form-container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 40px 120px;
+}
+
+/* ── INTRO ── */
+.intro-box {
+  border-left: 3px solid var(--ink);
+  padding: 24px 28px;
+  margin: 48px 0 20px;
+  font-size: 15px;
+  color: var(--ink-mid);
+  line-height: 1.85;
+  background: var(--card);
+}
+
+.intro-box p + p { margin-top: 10px; }
+
+.intro-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--rule);
+  font-size: 13px;
+  color: var(--ink-faint);
+}
+
+.deadline-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--ink);
+  border: 1.5px solid var(--ink);
+  padding: 4px 12px;
+}
+
+/* ── FILL NOTE ── */
+.fill-note {
+  font-size: 14px;
+  color: var(--ink-mid);
+  padding: 14px 0;
+  margin-bottom: 48px;
+  border-bottom: 1px solid var(--rule);
+}
+
+/* ── SECTION ── */
+.section { margin-bottom: 64px; }
+
+.section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 36px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid var(--ink);
+}
+
+.section-number {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 0.01em;
+}
+
+/* ── QUESTION ── */
+.question { margin-bottom: 40px; }
+
+.question-label {
+  display: block;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 6px;
+  line-height: 1.5;
+}
+
+.question-label .req { color: var(--ink); margin-left: 2px; }
+.question-label .opt {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--ink-faint);
+  margin-left: 8px;
+}
+
+.question-hint {
+  font-size: 13px;
+  color: var(--ink-faint);
+  margin-bottom: 14px;
+}
+
+/* ── INPUTS ── */
+input[type="text"],
+input[type="email"],
+textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid var(--rule);
+  background: var(--card);
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 16px;
+  color: var(--ink);
+  outline: none;
+  border-radius: 0;
+  -webkit-appearance: none;
+  transition: border-color 0.15s;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+textarea:focus { border-color: var(--ink); }
+
+textarea { resize: vertical; min-height: 100px; line-height: 1.7; }
+
+/* ── OPTIONS ── */
+.options-list { display: flex; flex-direction: column; gap: 6px; }
+
+.option-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: background 0.1s, border-color 0.1s;
+  user-select: none;
+  background: var(--card);
+}
+
+.option-item:hover { background: var(--hover); }
+
+.option-item.selected {
+  background: var(--selected);
+  border-color: var(--ink);
+}
+
+.option-item input[type="radio"],
+.option-item input[type="checkbox"] {
+  width: 17px;
+  height: 17px;
+  margin-top: 3px;
+  flex-shrink: 0;
+  accent-color: var(--ink);
+  cursor: pointer;
+}
+
+.option-text {
+  font-size: 15px;
+  color: var(--ink);
+  line-height: 1.6;
+}
+
+.option-group-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 18px 0 8px;
+}
+.option-group-label:first-child { margin-top: 0; }
+
+.other-wrap { display: none; margin-top: 6px; padding-left: 30px; }
+.other-wrap.show { display: block; }
+.other-wrap input { font-size: 14px; padding: 8px 12px; }
+
+.supplement { margin-top: 14px; }
+.supplement-label { font-size: 13px; color: var(--ink-faint); margin-bottom: 6px; }
+
+/* ── DRAG SORT ── */
+.drag-hint { font-size: 13px; color: var(--ink-faint); margin-bottom: 10px; }
+
+.drag-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+
+.drag-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 13px 16px;
+  background: var(--card);
+  border: 1.5px solid var(--rule);
+  cursor: grab;
+  font-size: 15px;
+  color: var(--ink);
+  line-height: 1.5;
+  user-select: none;
+  transition: border-color 0.1s;
+}
+
+.drag-item:active { cursor: grabbing; }
+.drag-item.dragging { opacity: 0.4; }
+.drag-item.drag-over { border-color: var(--ink); background: var(--selected); }
+
+.drag-handle {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex-shrink: 0;
+  opacity: 0.25;
+}
+.drag-handle span { display: block; width: 16px; height: 1.5px; background: var(--ink); }
+
+.drag-rank {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  background: var(--ink);
+  color: var(--bg);
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── DISCUSSION CARDS ── */
+.discussion-options { display: flex; flex-direction: column; gap: 6px; }
+
+.discussion-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px 18px;
+  background: var(--card);
+  border: 1.5px solid var(--rule);
+  cursor: pointer;
+  transition: background 0.1s, border-color 0.1s;
+  user-select: none;
+}
+
+.discussion-card:hover { background: var(--hover); border-color: var(--ink); }
+.discussion-card.selected { background: var(--selected); border-color: var(--ink); }
+.discussion-card input[type="radio"] { display: none; }
+
+.card-tag {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  background: var(--rule);
+  color: var(--ink-faint);
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+  transition: background 0.1s, color 0.1s;
+}
+
+.discussion-card.selected .card-tag { background: var(--ink); color: var(--bg); }
+
+.card-title { font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
+.card-desc { font-size: 13px; color: var(--ink-faint); line-height: 1.5; }
+
+/* ── ERRORS ── */
+.field-error { display: none; font-size: 12px; color: var(--error); margin-top: 6px; }
+.field-error.show { display: block; }
+.has-error input, .has-error textarea { border-color: var(--error); }
+
+/* ── SUBMIT ── */
+.submit-section {
+  margin-top: 64px;
+  padding-top: 40px;
+  border-top: 2px solid var(--ink);
+}
+
+.submit-notice {
+  font-size: 13px;
+  color: var(--ink-faint);
+  margin-bottom: 24px;
+  line-height: 1.7;
+}
+
+.submit-notice a { color: var(--ink); }
+
+.btn-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--ink);
+  color: var(--bg);
+  border: none;
+  padding: 16px 40px;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: background 0.15s;
+  border-radius: 0;
+}
+
+.btn-submit:hover { background: #333; }
+.btn-submit:active { background: #000; }
+.btn-submit.loading { opacity: 0.5; pointer-events: none; }
+
+/* ── SUCCESS ── */
+.success-screen {
+  display: none;
+  text-align: center;
+  padding: 100px 40px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+.success-screen.show { display: block; }
+
+.success-icon {
+  width: 52px;
+  height: 52px;
+  border: 2px solid var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 28px;
+}
+
+.success-title {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--ink);
+  margin-bottom: 12px;
+}
+
+.success-text { font-size: 14px; color: var(--ink-mid); line-height: 1.8; }
+.success-text a { color: var(--ink); }
+
+/* ── PROGRESS BAR ── */
+.progress-bar-wrap {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--bg);
+  border-top: 1.5px solid var(--ink);
+  padding: 12px 40px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 100;
+}
+
+.progress-track {
+  flex: 1;
+  height: 4px;
+  background: var(--rule);
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--ink);
+  transition: width 0.3s ease;
+  width: 0%;
+}
+
+.progress-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--ink-faint);
+  white-space: nowrap;
+  min-width: 60px;
+  text-align: right;
+}
+
+@media (max-width: 600px) {
+  .progress-bar-wrap { padding: 10px 20px; }
+}
+
+
+/* ── MOBILE ── */
+@media (max-width: 600px) {
+  .header-inner, .form-container { padding: 0 20px; }
+  .site-header { padding: 36px 0 32px; }
+  .form-container { padding-bottom: 60px; }
+  .event-title { font-size: 26px; }
+  input[type="text"], input[type="email"], textarea { font-size: 16px; }
+  .option-item { min-height: 48px; }
+  .btn-submit { width: 100%; justify-content: center; font-size: 16px; }
+  .drag-item { font-size: 14px; padding: 12px 12px; }
+  .section-title { font-size: 16px; }
+  .question-label { font-size: 15px; }
+  .intro-footer { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="series-label">NSTC TWiNSS &nbsp;·&nbsp; 淨零綠廊系列講座 III</div>
+    <h1 class="event-title">公部門互動<br>經驗交流</h1>
+    <div class="event-meta">
+      <div class="meta-item">
+        <svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="3" y="4" width="18" height="18" rx="1"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        2025年5月22日（五）14:00–16:30
+      </div>
+      <div class="meta-item">
+        <svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/>
+        </svg>
+        IEAT 會議中心 1202 會議室，臺北市中山區松江路 350 號
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="form-container">
+
+  <div class="intro-box">
+    <p>這場活動邀請研究團隊成員分享與公部門溝通協作的實務經驗，包括如何提供政策建議、建立溝通管道，以及理解公部門的決策邏輯。</p>
+    <p>不論是已經累積豐富經驗，還是剛開始摸索、還沒有機會接觸公部門，每個人的視角都是這場對話的一部分。活動將依報名資料進行配對，讓不同經驗背景的成員能夠互相交流，歡迎各團隊成員踴躍報名參加！</p>
+    <div class="intro-footer">
+      <span>填答資料僅供活動籌備使用。詳細議程將於活動通知中提供。預計填答時間約 5 分鐘。</span>
+      <span class="deadline-badge">報名截止 &nbsp;5 / 15</span>
+    </div>
+  </div>
+
+  <div class="fill-note">以下各題可依實際經驗或預期情境填寫，尚無公部門互動經驗者，歡迎依預期狀況作答。</div>
+
+  <form id="regForm" novalidate>
+
+    <!-- Part 01 -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-number">01</span>
+        <span class="section-title">基本資訊</span>
+      </div>
+
+      <div class="question" id="q-name">
+        <label class="question-label">1.&nbsp; 姓名 <span class="req">*</span></label>
+        <input type="text" id="name" placeholder="請填寫姓名">
+        <div class="field-error" id="err-name">請填寫姓名</div>
+      </div>
+
+      <div class="question" id="q-email">
+        <label class="question-label">2.&nbsp; 電子郵件 <span class="req">*</span></label>
+        <p class="question-hint">填答完成後，系統將自動將您的回答寄送至此信箱。</p>
+        <input type="email" id="email" placeholder="example@email.com">
+        <div class="field-error" id="err-email">請填寫有效的電子郵件地址</div>
+      </div>
+
+      <div class="question" id="q-org">
+        <label class="question-label">4.&nbsp; 單位／計畫名稱 <span class="req">*</span></label>
+        <input type="text" id="org" placeholder="請填寫所屬計畫名稱">
+        <div class="field-error" id="err-org">請填寫所屬計畫名稱</div>
+      </div>
+
+      <div class="question" id="q-role">
+        <label class="question-label">4.&nbsp; 職稱 <span class="req">*</span></label>
+        <input type="text" id="role" placeholder="例：教授、研究助理、博士生">
+        <div class="field-error" id="err-role">請填寫職稱</div>
+      </div>
+    </div>
+
+    <!-- Part 02 -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-number">02</span>
+        <span class="section-title">與公部門互動的經驗</span>
+      </div>
+
+      <div class="question" id="q-exp">
+        <label class="question-label">5.&nbsp; 請問是否有與公部門直接互動的經驗？ <span class="req">*</span></label>
+        <div class="field-error" id="err-exp">請選擇一項</div>
+        <div class="options-list">
+          <label class="option-item"><input type="radio" name="exp" value="有，且互動頻繁"><span class="option-text">有，且互動頻繁</span></label>
+          <label class="option-item"><input type="radio" name="exp" value="有，但次數不多"><span class="option-text">有，但次數不多</span></label>
+          <label class="option-item"><input type="radio" name="exp" value="目前尚無"><span class="option-text">目前尚無</span></label>
+        </div>
+      </div>
+
+      <div class="question" id="q-dept">
+        <label class="question-label">6.&nbsp; 研究議題主要與哪些公部門單位相關？ <span class="req">*</span><span class="opt">可多選</span></label>
+        <div class="field-error" id="err-dept">請至少選擇一項</div>
+        <div class="options-list">
+          <label class="option-item"><input type="checkbox" name="dept" value="環境部"><span class="option-text">環境部</span></label>
+          <label class="option-item"><input type="checkbox" name="dept" value="經濟部"><span class="option-text">經濟部</span></label>
+          <label class="option-item"><input type="checkbox" name="dept" value="國家發展委員會"><span class="option-text">國家發展委員會</span></label>
+          <label class="option-item"><input type="checkbox" name="dept" value="勞動部"><span class="option-text">勞動部</span></label>
+          <label class="option-item"><input type="checkbox" name="dept" value="內政部"><span class="option-text">內政部</span></label>
+          <label class="option-item"><input type="checkbox" name="dept" value="交通部"><span class="option-text">交通部</span></label>
+          <label class="option-item"><input type="checkbox" name="dept" value="農業部"><span class="option-text">農業部</span></label>
+          <label class="option-item"><input type="checkbox" name="dept" value="教育部"><span class="option-text">教育部</span></label>
+          <label class="option-item"><input type="checkbox" name="dept" value="衛生福利部"><span class="option-text">衛生福利部</span></label>
+          <label class="option-item"><input type="checkbox" name="dept" value="行政院（含各辦公室）"><span class="option-text">行政院（含各辦公室）</span></label>
+          <label class="option-item"><input type="checkbox" name="dept" value="地方政府"><span class="option-text">地方政府</span></label>
+          <label class="option-item"><input type="checkbox" name="dept" value="其他"><span class="option-text">其他</span></label>
+          <div class="other-wrap" id="dept-other"><input type="text" id="dept-other-text" placeholder="請填寫"></div>
+        </div>
+        <div class="supplement">
+          <div class="supplement-label">若有特定署局或地方政府，歡迎補充說明（選填）</div>
+          <input type="text" id="dept-supplement" placeholder="例：氣候變遷署、高雄市政府環境保護局">
+        </div>
+      </div>
+
+      <div class="question">
+        <label class="question-label">7.&nbsp; 與公部門互動的形式是？<span class="opt">可多選，選填</span></label>
+        <div class="options-list">
+          <label class="option-item"><input type="checkbox" name="form" value="受邀參與政府委託研究或顧問工作"><span class="option-text">受邀參與政府委託研究或顧問工作</span></label>
+          <label class="option-item"><input type="checkbox" name="form" value="提供書面政策建議或研究報告"><span class="option-text">提供書面政策建議或研究報告</span></label>
+          <label class="option-item"><input type="checkbox" name="form" value="出席公聽會、諮詢會議或計畫審查"><span class="option-text">出席公聽會、諮詢會議或計畫審查</span></label>
+          <label class="option-item"><input type="checkbox" name="form" value="非正式接觸（如私下拜會、交流等）"><span class="option-text">非正式接觸（如私下拜會、交流等）</span></label>
+          <label class="option-item"><input type="checkbox" name="form" value="透過媒體或公開倡議間接影響政策"><span class="option-text">透過媒體或公開倡議間接影響政策</span></label>
+          <label class="option-item"><input type="checkbox" name="form" value="其他"><span class="option-text">其他</span></label>
+          <div class="other-wrap" id="form-other"><input type="text" id="form-other-text" placeholder="請說明"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Part 03 -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-number">03</span>
+        <span class="section-title">困難與問題</span>
+      </div>
+
+      <div class="question">
+        <label class="question-label">8.&nbsp; 與公部門溝通時，遇過或預期會遇到哪些困難？<span class="opt">選填，請拖拉排序</span></label>
+        <p class="question-hint">將最困擾的項目拖到最上方。</p>
+        <ul class="drag-list" id="dragList">
+          <li class="drag-item" draggable="true" data-value="不確定該聯繫誰、難以找到適合的溝通窗口"><div class="drag-handle"><span></span><span></span><span></span></div><div class="drag-rank">1</div><span>不確定該聯繫誰、難以找到適合的溝通窗口</span></li>
+          <li class="drag-item" draggable="true" data-value="找到窗口後，對方未有回應"><div class="drag-handle"><span></span><span></span><span></span></div><div class="drag-rank">2</div><span>找到窗口後，對方未有回應</span></li>
+          <li class="drag-item" draggable="true" data-value="對方雖有回應，但不清楚研究成果能如何協助其政策"><div class="drag-handle"><span></span><span></span><span></span></div><div class="drag-rank">3</div><span>對方雖有回應，但不清楚研究成果能如何協助其政策</span></li>
+          <li class="drag-item" draggable="true" data-value="難以將研究成果轉化為公部門易於理解及運用的形式"><div class="drag-handle"><span></span><span></span><span></span></div><div class="drag-rank">4</div><span>難以將研究成果轉化為公部門易於理解及運用的形式</span></li>
+          <li class="drag-item" draggable="true" data-value="提出的政策建議或研究成果未獲實質採納"><div class="drag-handle"><span></span><span></span><span></span></div><div class="drag-rank">5</div><span>提出的政策建議或研究成果未獲實質採納</span></li>
+          <li class="drag-item" draggable="true" data-value="時機未能配合，政策討論窗口已過"><div class="drag-handle"><span></span><span></span><span></span></div><div class="drag-rank">6</div><span>時機未能配合，政策討論窗口已過</span></li>
+        </ul>
+      </div>
+
+      <div class="question">
+        <label class="question-label">9.&nbsp; 請分享您希望在本次活動中討論或請益的問題。<span class="opt">選填</span></label>
+        <p class="question-hint">可包含過去與公部門互動的具體經驗、政策建議的撰寫與傳達，或其他希望探討的問題。</p>
+        <textarea id="openQ" placeholder="請自由填寫" style="min-height:130px;"></textarea>
+      </div>
+    </div>
+
+    <!-- Part 04 -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-number">04</span>
+        <span class="section-title">活動討論方向</span>
+      </div>
+
+      <div class="question" id="q-topic">
+        <label class="question-label">10.&nbsp; 請選擇您最希望在活動中深入討論的主題。 <span class="req">*</span></label>
+        
+        <div class="field-error" id="err-topic">請選擇一個討論主題</div>
+        <div class="discussion-options">
+          <label class="discussion-card"><input type="radio" name="topic" value="A"><div class="card-tag">A</div><div><div class="card-title">建立溝通管道</div><div class="card-desc">如何找到適合的溝通窗口，並建立初步的互信關係</div></div></label>
+          <label class="discussion-card"><input type="radio" name="topic" value="B"><div class="card-tag">B</div><div><div class="card-title">研究成果的政策轉化</div><div class="card-desc">如何將研究語言轉化為公部門可理解並運用的政策建議</div></div></label>
+          <label class="discussion-card"><input type="radio" name="topic" value="C"><div class="card-tag">C</div><div><div class="card-title">理解公部門的決策機制</div><div class="card-desc">公部門如何做決策，以及哪些因素真正影響政策走向</div></div></label>
+          <label class="discussion-card"><input type="radio" name="topic" value="D"><div class="card-tag">D</div><div><div class="card-title">面對溝通困境的因應方式</div><div class="card-desc">當政策建議未獲重視，或溝通陷入僵局時，可以如何應對</div></div></label>
+        </div>
+      </div>
+
+
+    </div>
+
+    <div class="submit-section">
+      <p class="submit-notice">填答資料僅供活動籌備使用。如有任何問題，請聯繫專案經理 許君咏：<a href="mailto:hcy@gms.ndhu.edu.tw">hcy@gms.ndhu.edu.tw</a></p>
+      <button type="submit" class="btn-submit" id="submitBtn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        送出報名
+      </button>
+    </div>
+
+  </form>
+
+  <div class="success-screen" id="successScreen">
+    <div class="success-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <div class="success-title">報名成功，感謝參與！</div>
+    <p class="success-text">已收到報名資料，詳細議程與分組結果將於活動通知中提供。<br>如有疑問請聯繫 <a href="mailto:hcy@gms.ndhu.edu.tw">hcy@gms.ndhu.edu.tw</a></p>
+  </div>
+
+</div>
+
+<div class="progress-bar-wrap" id="progressBar">
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-label" id="progressLabel">0 / 6</div>
+</div>
+
+<script>
+// Option highlight
+document.querySelectorAll('.option-item input').forEach(input => {
+  input.addEventListener('change', () => {
+    const name = input.name;
+    if (input.type === 'radio') {
+      document.querySelectorAll(`input[name="${name}"]`).forEach(r => {
+        r.closest('.option-item').classList.toggle('selected', r.checked);
+      });
+    } else {
+      input.closest('.option-item').classList.toggle('selected', input.checked);
+    }
+  });
+});
+
+// Discussion cards
+document.querySelectorAll('.discussion-card input').forEach(input => {
+  input.addEventListener('change', () => {
+    document.querySelectorAll('.discussion-card').forEach(c => c.classList.remove('selected'));
+    if (input.checked) input.closest('.discussion-card').classList.add('selected');
+  });
+});
+
+// Other fields
+[['dept', 'dept-other'], ['form', 'form-other']].forEach(([name, wrapId]) => {
+  document.querySelectorAll(`input[name="${name}"]`).forEach(input => {
+    input.addEventListener('change', () => {
+      const show = document.querySelector(`input[name="${name}"][value="其他"]`)?.checked;
+      document.getElementById(wrapId)?.classList.toggle('show', !!show);
+    });
+  });
+});
+
+// Drag sort
+const dragList = document.getElementById('dragList');
+let dragSrc = null;
+
+dragList.querySelectorAll('.drag-item').forEach(item => {
+  item.addEventListener('dragstart', e => { dragSrc = item; item.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; });
+  item.addEventListener('dragend', () => { item.classList.remove('dragging'); dragList.querySelectorAll('.drag-item').forEach(i => i.classList.remove('drag-over')); updateRanks(); });
+  item.addEventListener('dragover', e => { e.preventDefault(); if (item !== dragSrc) { dragList.querySelectorAll('.drag-item').forEach(i => i.classList.remove('drag-over')); item.classList.add('drag-over'); } });
+  item.addEventListener('drop', e => { e.preventDefault(); if (dragSrc && item !== dragSrc) { const items = [...dragList.querySelectorAll('.drag-item')]; dragList.insertBefore(dragSrc, items.indexOf(dragSrc) < items.indexOf(item) ? item.nextSibling : item); } });
+});
+
+function updateRanks() {
+  dragList.querySelectorAll('.drag-item').forEach((item, i) => { item.querySelector('.drag-rank').textContent = i + 1; });
+}
+
+// Touch drag
+let touchDragItem = null, touchClone = null;
+dragList.querySelectorAll('.drag-item').forEach(item => {
+  item.addEventListener('touchstart', e => {
+    touchDragItem = item;
+    const touch = e.touches[0];
+    touchClone = item.cloneNode(true);
+    touchClone.style.cssText = `position:fixed;opacity:0.7;pointer-events:none;width:${item.offsetWidth}px;z-index:999;top:${touch.clientY - item.offsetHeight/2}px;left:${item.getBoundingClientRect().left}px;background:#dedad2;border-color:#111;`;
+    document.body.appendChild(touchClone);
+    item.style.opacity = '0.3';
+  }, { passive: true });
+  item.addEventListener('touchmove', e => {
+    if (!touchDragItem) return;
+    e.preventDefault();
+    const touch = e.touches[0];
+    touchClone.style.top = `${touch.clientY - touchDragItem.offsetHeight/2}px`;
+    const el = document.elementFromPoint(touch.clientX, touch.clientY);
+    const target = el?.closest('.drag-item');
+    if (target && target !== touchDragItem) {
+      const items = [...dragList.querySelectorAll('.drag-item')];
+      dragList.insertBefore(touchDragItem, items.indexOf(touchDragItem) < items.indexOf(target) ? target.nextSibling : target);
+      updateRanks();
+    }
+  }, { passive: false });
+  item.addEventListener('touchend', () => {
+    if (touchDragItem) touchDragItem.style.opacity = '1';
+    if (touchClone) touchClone.remove();
+    touchDragItem = null; touchClone = null;
+  });
+});
+
+// Validation
+function validate() {
+  let ok = true;
+  const checks = [
+    { check: () => document.getElementById('name').value.trim(), errId: 'err-name', qId: 'q-name' },
+    { check: () => { const v = document.getElementById('email').value.trim(); return v && /^[^@]+@[^@]+\.[^@]+$/.test(v); }, errId: 'err-email', qId: 'q-email' },
+    { check: () => document.getElementById('org').value.trim(), errId: 'err-org', qId: 'q-org' },
+    { check: () => document.getElementById('role').value.trim(), errId: 'err-role', qId: 'q-role' },
+    { check: () => document.querySelector('input[name="exp"]:checked'), errId: 'err-exp', qId: 'q-exp' },
+    { check: () => document.querySelector('input[name="dept"]:checked'), errId: 'err-dept', qId: 'q-dept' },
+    { check: () => document.querySelector('input[name="form"]:checked'), errId: 'err-form', qId: 'q-form' },
+    { check: () => document.querySelector('input[name="topic"]:checked'), errId: 'err-topic', qId: 'q-topic' },
+  ];
+  checks.forEach(c => {
+    const pass = !!c.check();
+    document.getElementById(c.errId).classList.toggle('show', !pass);
+    if (c.qId) document.getElementById(c.qId).classList.toggle('has-error', !pass);
+    if (!pass) ok = false;
+  });
+  return ok;
+}
+
+// Collect
+function collect() {
+  const getChecked = name => [...document.querySelectorAll(`input[name="${name}"]:checked`)].map(i => i.value);
+  return {
+    timestamp: new Date().toISOString(),
+    姓名: document.getElementById('name').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    單位: document.getElementById('org').value.trim(),
+    職稱: document.getElementById('role').value.trim(),
+    互動經驗: document.querySelector('input[name="exp"]:checked')?.value,
+    相關部會: getChecked('dept').join('、') + (document.getElementById('dept-other-text').value ? `、${document.getElementById('dept-other-text').value}` : ''),
+    特定署局補充: document.getElementById('dept-supplement').value.trim(),
+    互動形式: getChecked('form').join('、') + (document.getElementById('form-other-text').value ? `、${document.getElementById('form-other-text').value}` : ''),
+    困難排序: [...dragList.querySelectorAll('.drag-item')].map(i => i.dataset.value).join(' > '),
+    開放回答: document.getElementById('openQ').value.trim(),
+    討論主題: document.querySelector('input[name="topic"]:checked')?.value,
+  };
+}
+
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyrZ71jaWDHgwchoOhCtG8dovnL_7jv9-iwdCSmrRBg7CJYIjU0vZQxgH6-_OCcg_-8Rw/exec';
+
+document.getElementById('regForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  if (!validate()) { document.querySelector('.has-error')?.scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
+  const btn = document.getElementById('submitBtn');
+  btn.classList.add('loading');
+  btn.textContent = '送出中…';
+  try {
+    await fetch(SHEET_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(collect()) });
+    document.getElementById('regForm').style.display = 'none';
+    const s = document.getElementById('successScreen');
+    s.classList.add('show');
+    s.scrollIntoView({ behavior: 'smooth' });
+  } catch {
+    btn.classList.remove('loading');
+    btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> 送出報名';
+    alert('送出時發生錯誤，請稍後再試或直接聯繫 hcy@gms.ndhu.edu.tw');
+  }
+});
+
+// Progress bar
+const requiredFields = [
+  () => document.getElementById('name').value.trim(),
+  () => { const v = document.getElementById('email').value.trim(); return v && /^[^@]+@[^@]+\.[^@]+$/.test(v); },
+  () => document.getElementById('org').value.trim(),
+  () => document.getElementById('role').value.trim(),
+  () => document.querySelector('input[name="exp"]:checked'),
+  () => document.querySelector('input[name="dept"]:checked'),
+  () => document.querySelector('input[name="topic"]:checked'),
+  () => document.querySelector('input[name="form"]:checked'),
+];
+
+function updateProgress() {
+  const filled = requiredFields.filter(fn => !!fn()).length;
+  const pct = Math.round((filled / requiredFields.length) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = filled + ' / ' + requiredFields.length;
+}
+
+document.getElementById('regForm').addEventListener('input', updateProgress);
+document.getElementById('regForm').addEventListener('change', updateProgress);
+updateProgress();
+
+</script>
+</body>
+</html>
