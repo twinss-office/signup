@@ -774,7 +774,6 @@ function validate() {
     { check: () => document.getElementById('role').value.trim(), errId: 'err-role', qId: 'q-role' },
     { check: () => document.querySelector('input[name="exp"]:checked'), errId: 'err-exp', qId: 'q-exp' },
     { check: () => document.querySelector('input[name="dept"]:checked'), errId: 'err-dept', qId: 'q-dept' },
-    { check: () => document.querySelector('input[name="form"]:checked'), errId: 'err-form', qId: 'q-form' },
     { check: () => document.querySelector('input[name="topic"]:checked'), errId: 'err-topic', qId: 'q-topic' },
   ];
   checks.forEach(c => {
@@ -835,7 +834,6 @@ const requiredFields = [
   () => document.querySelector('input[name="exp"]:checked'),
   () => document.querySelector('input[name="dept"]:checked'),
   () => document.querySelector('input[name="topic"]:checked'),
-  () => document.querySelector('input[name="form"]:checked'),
 ];
 
 function updateProgress() {
